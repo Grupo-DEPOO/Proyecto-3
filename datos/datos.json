@@ -1,0 +1,164 @@
+{
+	"empleados": [
+		{
+			"nombre": "Juan",
+			"tipoEmpleado": "Administrador",
+			"contraseña": "123"
+		},
+		{
+			"nombre": "Andres",
+			"tipoEmpleado": "Cajero",
+			"contraseña": "80090"
+		},
+		{
+			"nombre": "Julian",
+			"tipoEmpleado": "Operador",
+			"contraseña": "1010"
+		}
+	], 
+	"compradores": [
+		{
+			"nombre": "Juan Carlos",
+			"capital": 100000,
+			"isVerificado": false,
+			"metodo-pago": "efectivo",
+			"tope-compras": 0,
+			"compradas":[],
+			"piezas": [],
+			"valor_coleccion": 0,
+			"contraseña": "pepe123"
+			
+		}, 
+		{
+			"nombre": "Juan Pedro",
+			"capital": 100000,
+			"isVerificado": true,
+			"metodo-pago": "efectivo",
+			"tope-compras": 2,
+			"compradas":[],
+			"piezas": [{
+						"titulo": "nft de mono con chaleco",
+						"anio": "2021",
+						"LugarDeCreacion": "USA",
+						"autor": "jimmy",
+						"isFisico": false,
+						"precioFijo": false,
+						"tipo": "nft",
+						"formato": "jpg"
+						}],
+			"valor_coleccion": 12000,
+			"contraseña": "holatu12"
+			
+		}, 
+		{
+			"nombre": "David",
+			"capital": 700000,
+			"isVerificado": true,
+			"metodo-pago": "tarjeta",
+			"tope-compras": 3,
+			"compradas":[],
+			"piezas": [],
+			"valor_coleccion": 0,
+			"contraseña": "jaja332"
+		}
+	], 
+	"piezas": [
+		{
+			"titulo": "Pintura de pedro",
+			"anio": "2020",
+			"LugarDeCreacion": "Colombia",
+			"autor": "Pedro",
+			"isFisico": true,
+			"precioFijo": true,
+			"idComprador": "David",
+			"precio": 12000,
+			"tipo": "pintura",
+			"profundidad": 2,
+			"alto": 3.1,
+			"ancho": 1.2,
+			"Materiales de construccion": "pintura, lienzo, pincel",
+			"peso": 2.2,
+			"needsElectricity": false,
+			"needsOther": false
+		},
+		{
+			"titulo": "nft de mono con gafas",
+			"anio": "2021",
+			"LugarDeCreacion": "USA",
+			"autor": "jimmy",
+			"isFisico": false,
+			"precioFijo": true,
+			"idComprador": "disponible",
+			"precio": 2000,
+			"tipo": "nft",
+			"formato": "jpg"
+		},
+		{
+			"titulo": "ruana con manchas",
+			"anio": "2011",
+			"LugarDeCreacion": "Colombia",
+			"autor": "Juan",
+			"isFisico": true,
+			"precioFijo": false,
+			"valorMinimo": 1000,
+			"valorInicial": 500,
+			"estado" : "disponible",
+			"ofertas" : [{
+							"idComprador" : "Juan Pedro",
+							"valor": 1200
+						},
+						{
+							"idComprador" : "David",
+							"valor" : 700
+						}],
+			"tipo": "ropa",
+			"profundidad": 0.2,
+			"alto": 5,
+			"ancho": 1.2,
+			"Materiales de construccion": "algodon, paja, hilos",
+			"peso": 0.2,
+			"needsElectricity": false,
+			"needsOther": false
+		}
+	],"allPiezas": [
+		{
+			"titulo": "Pintura de pedro",
+			"anio": "2020",
+			"LugarDeCreacion": "Colombia",
+			"autor": "Pedro",
+			"isFisico": true,
+			"dueños": "galeria",
+			"ultimaVenta": "0"
+		},
+		{
+			"titulo": "nft de mono con chaleco",
+			"anio": "2021",
+			"LugarDeCreacion": "USA",
+			"autor": "jimmy",
+			"isFisico": false,
+			"dueños": "Juan pedro",
+			"ultimaVenta": "12000 en 2003-12-25"
+		},
+		{
+			"titulo": "nft de mono con gafas",
+			"anio": "2021",
+			"LugarDeCreacion": "USA",
+			"autor": "jimmy",
+			"isFisico": false,
+			"dueños": "galeria",
+			"ultimaVenta": "0"
+		},
+		{
+			"titulo": "ruana con manchas",
+			"anio": "2011",
+			"LugarDeCreacion": "Colombia",
+			"autor": "Juan",
+			"isFisico": true,
+			"precioFijo": false,
+			"dueños": "galeria",
+			"ultimaVenta": "12000 en 2003-12-25"
+			
+		}
+			
+	]
+}
