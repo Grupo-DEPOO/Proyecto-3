@@ -97,7 +97,7 @@ public class InterfazGaleria extends JFrame {
         try {
             unosEmpleados = new ControladorEmpleados();
             galeria = new Galeria();
-            unosEmpleados.cargarEmpleados("./datos/datos.json");
+            unosEmpleados.cargarEmpleados("./datos/datos2.json");
             procesador = new ProcesarPago("./datos/metodos.config");
             galeria.cargarDatos("./datos/datos.json");
             subastasP = new ControladorSubasta(galeria);
@@ -119,23 +119,6 @@ public class InterfazGaleria extends JFrame {
         }
     }
 
-    public void probarComprador(String usuario, String contraseña) {
-        try {
-            Comprador comprador = compradores1.login(usuario, contraseña);
-            // Aquí puedes llamar a una función para mostrar las funcionalidades del comprador
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Error al iniciar sesión: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        }
-    }
-
-    public void probarEmpleado(String usuario, String contraseña) {
-        try {
-            Empleado empleado = unosEmpleados.login(usuario, contraseña);
-            // Aquí puedes llamar a una función para mostrar las funcionalidades del empleado
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Error al iniciar sesión: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        }
-    }
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {

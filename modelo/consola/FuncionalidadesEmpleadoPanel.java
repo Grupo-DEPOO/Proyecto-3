@@ -65,13 +65,11 @@ public class FuncionalidadesEmpleadoPanel extends JPanel {
         JButton button = new JButton("Seleccionar");
         JButton cerrar = new JButton("Cerrar sesión");
 
-        // Panel para los botones
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new GridLayout(1, 2)); 
         buttonPanel.add(button);
         buttonPanel.add(cerrar);
 
-        // Añadir el panel de botones al sur del panel principal
         panel.add(buttonPanel, BorderLayout.SOUTH);
 
         button.addActionListener(new ActionListener() {

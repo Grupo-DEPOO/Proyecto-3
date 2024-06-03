@@ -45,7 +45,7 @@ public class ConsolaGaleria {
 	        {
 	    		unosEmpleados = new ControladorEmpleados( );
 	            galeria = new Galeria();
-	            unosEmpleados.cargarEmpleados("./datos/datos.json");
+	            unosEmpleados.cargarEmpleados("./datos/datos2.json");
 	            procesador = new ProcesarPago("./datos/metodos.config");
 	            galeria.cargarDatos("./datos/datos.json");
 	            subastasP = new ControladorSubasta(galeria);
