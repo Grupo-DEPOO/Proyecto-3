@@ -41,12 +41,8 @@ public class InterfazGaleria extends JFrame {
     private CardLayout cardLayout;
     private JPanel mainPanel;
     JFrame frame = new JFrame();
-	JButton loginButton = new JButton("Login");
-	JButton resetButton = new JButton("Reset");
-	JTextField userIDField = new JTextField();
-	JPasswordField userPasswordField = new JPasswordField();
-	JLabel userIDLabel = new JLabel("userID:");
-	JLabel userPasswordLabel = new JLabel("password:");
+
+
 	JLabel messageLabel = new JLabel();
 
     public InterfazGaleria() {
