@@ -72,6 +72,7 @@ public class InterfazGaleria extends JFrame {
                 login.frame.setVisible(true);
                 dispose();
             }
+            
         });
         btnSalvar.addActionListener(e -> salvarDatos());
         btnSalir.addActionListener(e -> System.exit(0));
