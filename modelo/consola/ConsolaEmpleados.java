@@ -28,6 +28,7 @@ public class ConsolaEmpleados {
     private ControladorSubasta subastasP;
     private Galeria galeria;
     private ControladorCompradores compradores1;
+  
 
     /**
      * Es un método que corre la aplicación y realmente no hace nada interesante: sólo muestra cómo se podría utilizar la clase Aerolínea para hacer pruebas.
