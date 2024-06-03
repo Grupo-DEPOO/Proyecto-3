@@ -1,0 +1,2 @@
+metodoDePago: paypal, Tarjeta: 40346703, Cantidad: 12000,00, Fue exitosa?: true
+metodoDePago: paypal, Tarjeta: 40346703, Cantidad: 12000,00, Fue exitosa?: true

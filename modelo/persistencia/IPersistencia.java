@@ -11,6 +11,7 @@ public interface IPersistencia {
 	public void cargarPiezas(String archivo, Galeria galeria) throws IOException;
 	public void cargarCompradores(String archivo, Galeria galeria) throws IOException;
 	public void cargarHistoriaPiezas(String archivo, Galeria galeria) throws IOException;
+	public void cargarTarjetas(String archivo, Galeria galeria) throws IOException;
 	public void guardarDatosJSON(String archivo, ControladorEmpleados empleados, Galeria galeria) throws IOException;
 
 }

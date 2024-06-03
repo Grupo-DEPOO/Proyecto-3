@@ -6,10 +6,13 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
+
 import staff.Administrador;
 import staff.Cajero;
 import galeria.Galeria;
 import piezas.Pieza;
+import Pagos.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -66,20 +69,47 @@ public class ControladorOfertasFijas {
 		String idComprador = oferta.getComprador().getNombre();
 		Comprador comprador = galeria.getComprador(idComprador);
 		if(comprador.getCapital() >= oferta.getValor()) {
-			comprador.setCapital(comprador.getCapital() - oferta.getValor());
-			darPiezaAComprador(comprador.getNombre(), oferta.getPieza(), oferta.getValor());
-			galeria.getPrePiezas().get(oferta.getPieza().getTitulo()).
-			setDueños(galeria.getPrePiezas().get(oferta.getPieza().getTitulo()).getDueños() + ", " + idComprador);
-			galeria.getPrePiezas().get(oferta.getPieza().getTitulo()).setValorUltimaVenta(oferta.getValor() + " en " + getFecha());
-			galeria.deletePiezaInventario(oferta.getPieza().getTitulo());
-			galeria.getPiezasEnOfertaFija().remove(oferta.getPieza().getTitulo());
-			oferta.setEstado("pendiente de confirmacion de venta");
+				comprador.setCapital(comprador.getCapital() - oferta.getValor());
+				darPiezaAComprador(comprador.getNombre(), oferta.getPieza(), oferta.getValor());
+				galeria.getPrePiezas().get(oferta.getPieza().getTitulo()).
+				setDueños(galeria.getPrePiezas().get(oferta.getPieza().getTitulo()).getDueños() + ", " + idComprador);
+				galeria.getPrePiezas().get(oferta.getPieza().getTitulo()).setValorUltimaVenta(oferta.getValor() + " en " + getFecha());
+				galeria.deletePiezaInventario(oferta.getPieza().getTitulo());
+				galeria.getPiezasEnOfertaFija().remove(oferta.getPieza().getTitulo());
+				oferta.setEstado("pendiente de confirmacion de venta");
 		} else {
-			PiezaConPrecioFijo pieza = new PiezaConPrecioFijo(oferta.getValor(), oferta.getPieza(), "disponible");
-			galeria.addPiezasFijas(pieza);
-			ofertas.remove(id);
+				PiezaConPrecioFijo pieza = new PiezaConPrecioFijo(oferta.getValor(), oferta.getPieza(), "disponible");
+				galeria.addPiezasFijas(pieza);
+				ofertas.remove(id);
 		}
 	}
+	
+	public void verificarOfertaCajeroTarjeta(Cajero cajero, String id, String cardNumber, String dueño, int csv, String expiryDate, String metodo, ProcesarPago procesador ) {
+		TarjetaCredito tarjeta = galeria.getTarjeta(dueño);
+		Oferta oferta = ofertas.get(id);
+		String idComprador = oferta.getComprador().getNombre();
+		Comprador comprador = galeria.getComprador(idComprador);
+		if(tarjeta.getCardNumber().compareToIgnoreCase(cardNumber) == 0 && tarjeta.getCsv() == csv && tarjeta.getExpiryDate().compareToIgnoreCase(expiryDate) == 0) {
+			InformacionPago info = new InformacionPago(oferta.getValor(), getRandomString(), dueño);
+			boolean resultado = procesador.processPayment(metodo, tarjeta, info);
+			if(resultado) {
+				darPiezaAComprador(comprador.getNombre(), oferta.getPieza(), oferta.getValor());
+				galeria.getPrePiezas().get(oferta.getPieza().getTitulo()).
+				setDueños(galeria.getPrePiezas().get(oferta.getPieza().getTitulo()).getDueños() + ", " + idComprador);
+				galeria.getPrePiezas().get(oferta.getPieza().getTitulo()).setValorUltimaVenta(oferta.getValor() + " en " + getFecha());
+				galeria.deletePiezaInventario(oferta.getPieza().getTitulo());
+				galeria.getPiezasEnOfertaFija().remove(oferta.getPieza().getTitulo());
+				oferta.setEstado("pendiente de confirmacion de venta");
+			} else {
+					PiezaConPrecioFijo pieza = new PiezaConPrecioFijo(oferta.getValor(), oferta.getPieza(), "disponible");
+					galeria.addPiezasFijas(pieza);
+					ofertas.remove(id);
+			}
+		} else {
+			System.out.println("datos erroneos de la tarjeta");
+		}
+	}
+	
 	
 	public void darPiezaAComprador(String id, Pieza pieza, int valor) {
 		Map<String, Propietario> propietarios = galeria.getPropietarios();
@@ -142,4 +172,24 @@ public class ControladorOfertasFijas {
         
 	}
 	
+	public static String generateRandomString(int length) {
+        // Definir el conjunto de caracteres permitidos
+        String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        Random random = new Random();
+        StringBuilder stringBuilder = new StringBuilder(length);
+
+        // Generar la cadena aleatoria
+        for (int i = 0; i < length; i++) {
+            int randomIndex = random.nextInt(characters.length());
+            stringBuilder.append(characters.charAt(randomIndex));
+        }
+
+        return stringBuilder.toString();
+    }
+	
+	public String getRandomString() {
+		String randomString = generateRandomString(10);
+
+        return randomString;
+    }
 }

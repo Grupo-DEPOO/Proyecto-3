@@ -21,7 +21,7 @@
 			"nombre": "Juan Carlos",
 			"capital": 100000,
 			"isVerificado": false,
-			"metodo-pago": "efectivo",
+			"metodo-pago": "Efectivo",
 			"tope-compras": 0,
 			"compradas":[],
 			"piezas": [],
@@ -33,7 +33,7 @@
 			"nombre": "Juan Pedro",
 			"capital": 100000,
 			"isVerificado": true,
-			"metodo-pago": "efectivo",
+			"metodo-pago": "Efectivo",
 			"tope-compras": 2,
 			"compradas":[],
 			"piezas": [{
@@ -54,7 +54,7 @@
 			"nombre": "David",
 			"capital": 700000,
 			"isVerificado": true,
-			"metodo-pago": "tarjeta",
+			"metodo-pago": "Tarjeta",
 			"tope-compras": 3,
 			"compradas":[],
 			"piezas": [],
@@ -160,5 +160,26 @@
 			
 		}
 			
-	]
+	], "tarjetas": [
+		{
+			"cardNumber": "40578900",
+			"dueño": "Juan Carlos",
+			"csv": 100,
+			"fechaDeExpiracion": "11/12/28",
+			"saldo": 100000
+		},
+		{
+			"cardNumber": "50078901",
+			"dueño": "Juan Pedro",
+			"csv": 010,
+			"fechaDeExpiracion": "10/06/25",
+			"saldo": 40000
+		},
+		{
+			"cardNumber": "40346703",
+			"dueño": "David",
+			"csv": 301,
+			"fechaDeExpiracion": "11/12/28",
+			"saldo": 75000
+		}]
 }

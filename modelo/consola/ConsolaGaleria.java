@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.Set;
 
 import compraSubastaPiezas.PiezaConPrecioFijo;
 import compraSubastaPiezas.PiezaEnSubasta;
@@ -15,6 +16,7 @@ import compraSubastaPiezas.ControladorCompradores;
 import compraSubastaPiezas.Oferta;
 import staff.Administrador;
 import staff.Cajero;
+import Pagos.*;
 import staff.ControladorEmpleados;
 import galeria.Galeria;
 import persistencia.CentralPersistencia;
@@ -25,6 +27,7 @@ import piezas.PiezaVirtual;
 import staff.Empleado;
 import staff.Operador;
 
+
 public class ConsolaGaleria {
 
 	    private ControladorEmpleados unosEmpleados;
@@ -32,6 +35,7 @@ public class ConsolaGaleria {
 	    private ControladorSubasta subastasP;
 	    private Galeria galeria;
 	    private ControladorCompradores compradores1;
+	    private ProcesarPago procesador;
 
 	    /**
 	     * Es un método que corre la aplicación y realmente no hace nada interesante: sólo muestra cómo se podría utilizar la clase Aerolínea para hacer pruebas.
@@ -41,8 +45,9 @@ public class ConsolaGaleria {
 	        {
 	    		unosEmpleados = new ControladorEmpleados( );
 	            galeria = new Galeria();
-	            unosEmpleados.cargarEmpleados("./datos/datos2.json");
-	            galeria.cargarDatos("./datos/datos2.json");
+	            unosEmpleados.cargarEmpleados("./datos/datos.json");
+	            procesador = new ProcesarPago("./datos/metodos.config");
+	            galeria.cargarDatos("./datos/datos.json");
 	            subastasP = new ControladorSubasta(galeria);
 	            ofertas = new ControladorOfertasFijas(galeria);
 	            compradores1 = new ControladorCompradores(galeria);
@@ -117,7 +122,7 @@ public class ConsolaGaleria {
 	    
 	    public void funcionalidadesComprador(Comprador comprador) {
 	    	Scanner myObj = new Scanner(System.in);
-	    	System.out.println("1. Hacer una oferta a una pieza\n2. Hacer una oferta a una subasta\n3. Consultar historia pieza\n4. Consultar historia artista");
+	    	System.out.println("1. Hacer una oferta a una pieza\n2. Hacer una oferta a una subasta\n3. Consultar historia pieza\n4. Consultar historia artista\n5. Cambiar metodo de pago");
 	    	String decision = myObj.nextLine();
 	    	if(decision.compareTo("1") == 0) {
 	    		System.out.println("Piezas a oferta fija disponibles: ");
@@ -169,6 +174,9 @@ public class ConsolaGaleria {
 	            String historia = galeria.getHistoriaAutor(id);
 	            System.out.println(historia);
 	            
+	    	} else if(decision.compareTo("5") == 0) {
+	    		compradores1.cambiarMetodoPago(comprador);
+	    		System.out.println("Ahora su metodo de pago es: " + comprador.getMetodoPago());
 	    	}
 	    	
 	    }
@@ -284,7 +292,29 @@ public class ConsolaGaleria {
 			    		Scanner myObj3 = new Scanner(System.in);
 				    	System.out.println("digite el id de la oferta");
 				    	String id = myObj3.nextLine();
-				    	ofertas.revisarOferta((Administrador)null, (Cajero) empleado, id);
+				    	Oferta oferta = ofertas.getOferta(id);
+				    	if(oferta.getComprador().getMetodoPago().compareTo("Tarjeta") != 0) {
+				    		ofertas.revisarOferta((Administrador)null, (Cajero) empleado, id);
+				    	} else {
+				    		Set<String> metodos = procesador.getMetodos();
+				    		System.out.println("Metodos de pago: ");
+				    		for (String metodo : metodos) {
+				    		    System.out.println("Método: " + metodo);
+				    		}
+				    		Scanner myObj7 = new Scanner(System.in);
+				    		System.out.println("Digite un metodo de pago: ");
+				    		String metodo = myObj7.nextLine();
+				    		Scanner myObj4 = new Scanner(System.in);
+				    		System.out.println("digite el numero de la tarjeta");
+				    		String numero = myObj4.nextLine();
+				    		Scanner myObj5 = new Scanner(System.in);
+				    		System.out.println("digite el csv de la tarjeta");
+				    		int csv = myObj5.nextInt();
+				    		Scanner myObj6 = new Scanner(System.in);
+				    		System.out.println("digite la fecha de expiracion de la tarjeta");
+				    		String fecha = myObj6.nextLine();
+				    		ofertas.verificarOfertaCajeroTarjeta((Cajero) empleado, id, numero, oferta.getComprador().getNombre(), csv, fecha, metodo, procesador);
+				    	}
 				    	System.out.println(ofertas.getOferta(id).getEstado());
 			    	} else if(decision2.compareTo("2") == 0) {}
 		    	}
@@ -350,7 +380,30 @@ public class ConsolaGaleria {
 			    		Scanner myObj3 = new Scanner(System.in);
 				    	System.out.println("digite el id de la oferta");
 				    	String id = myObj3.nextLine();
-				    	subastasP.revisarSubasta((Administrador) null, (Cajero) empleado,(Operador) null, id);
+				    	PiezaEnSubasta piezaSubasta = galeria.getPiezaEnSubasta(id);
+				    	String ganador = piezaSubasta.getGanador();
+				    	if(galeria.getComprador(ganador).getMetodoPago().compareTo("Tarjeta") != 0) {
+				    		subastasP.revisarSubasta((Administrador) null, (Cajero) empleado,(Operador) null, id);
+				    	} else {
+				    		Set<String> metodos = procesador.getMetodos();
+				    		System.out.println("Metodos de pago: ");
+				    		for (String metodo : metodos) {
+				    		    System.out.println("Método: " + metodo);
+				    		}
+				    		Scanner myObj7 = new Scanner(System.in);
+				    		System.out.println("Digite un metodo de pago: ");
+				    		String metodo = myObj7.nextLine();
+				    		Scanner myObj4 = new Scanner(System.in);
+				    		System.out.println("digite el numero de la tarjeta");
+				    		String numero = myObj4.nextLine();
+				    		Scanner myObj5 = new Scanner(System.in);
+				    		System.out.println("digite el csv de la tarjeta");
+				    		int csv = myObj5.nextInt();
+				    		Scanner myObj6 = new Scanner(System.in);
+				    		System.out.println("digite la fecha de expiracion de la tarjeta");
+				    		String fecha = myObj6.nextLine();
+				    		subastasP.verificarPagoGanadorTarjeta((Cajero) empleado, id, numero, ganador, csv, fecha, metodo, procesador);
+				    	}
 				    	System.out.println(galeria.getPiezaEnSubasta(id).getEstado());
 			    	} else if(decision2.compareTo("2") == 0) {
 			    		correrAplicacion();

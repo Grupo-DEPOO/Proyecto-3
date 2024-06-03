@@ -23,6 +23,18 @@ public class ControladorCompradores {
 		return null;
 	}
 	
+	public void cambiarMetodoPago(Comprador comprador) {
+		if(comprador.getMetodoPago().compareTo("Efectivo") == 0) {
+			comprador.setMetodoPago("Tarjeta");
+		} else if(comprador.getMetodoPago().compareTo("Tarjeta") == 0) {
+			comprador.setMetodoPago("Efectivo");
+		}else {
+			comprador.setMetodoPago("Efectivo");
+		}
+		
+		
+	}
+	
 	public String getHistoriaComprador(Administrador admin, String id) {
 		String historia = "";
 		Comprador comprador = galeria.getComprador(id);

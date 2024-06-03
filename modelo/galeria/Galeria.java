@@ -15,6 +15,7 @@ import persistencia.CentralPersistencia;
 import persistencia.IPersistencia;
 import piezas.Pieza;
 import piezas.prePieza;
+import Pagos.TarjetaCredito;
 import staff.Empleado;
 
 public class Galeria {
@@ -26,6 +27,7 @@ public class Galeria {
 	private Map<String, Propietario> propietarios; 
 	private Map<String, prePieza> prePiezas;
 	private Map<String, List<String>> autores;
+	private Map<String, TarjetaCredito> tarjetas;
 
 	public Galeria() {
 		inventario = new HashMap<String, Pieza>( );
@@ -35,6 +37,19 @@ public class Galeria {
 		propietarios = new HashMap<String, Propietario>( );
 		prePiezas = new HashMap<String, prePieza>( );
 		autores = new HashMap<String, List<String>>();
+		tarjetas = new HashMap<String, TarjetaCredito>( );
+	}
+	
+	public void addTarjeta(String id, TarjetaCredito tarjeta) {
+		tarjetas.put(id, tarjeta);
+	}
+	
+	public TarjetaCredito getTarjeta(String id) {
+		return tarjetas.get(id);
+	}
+	
+	public Collection<TarjetaCredito> getTarjetas() {
+		return tarjetas.values();
 	}
 	
 	public void addPiezas(Pieza pieza) {
@@ -161,6 +176,7 @@ public class Galeria {
 	public void cargarDatos( String archivo ) throws IOException{
 		IPersistencia cargador = CentralPersistencia.getPersistencia();
 		cargador.cargarCompradores(archivo, this);
+		cargador.cargarTarjetas(archivo, this);
 		cargador.cargarPiezas(archivo, this);
 		cargador.cargarHistoriaPiezas(archivo, this);
     }

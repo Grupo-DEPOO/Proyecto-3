@@ -18,6 +18,7 @@ import compraSubastaPiezas.Propietario;
 import galeria.Galeria;
 import staff.ControladorEmpleados;
 import staff.Empleado;
+import Pagos.TarjetaCredito;
 import staff.Administrador;
 import staff.Operador;
 import staff.Cajero;
@@ -267,12 +268,38 @@ public class PersistenciaJson implements IPersistencia{
         }
     }
 	
+	public void cargarTarjetas(String archivo, Galeria galeria) throws IOException {
+		String jsonCompleto = new String( Files.readAllBytes( new File( archivo ).toPath( ) ) );
+        JSONObject raiz = new JSONObject( jsonCompleto );
+        
+        crearTarjetas( galeria, raiz.getJSONArray( "tarjetas" ) );
+	}
+	
+	private void crearTarjetas( Galeria galeria, JSONArray jAllTarjetas) {
+		int numTarjetas = jAllTarjetas.length( );
+		
+		 for( int i = 0; i < numTarjetas; i++ ){
+	            JSONObject tarjeta = jAllTarjetas.getJSONObject( i );
+	            TarjetaCredito nuevaTarjeta = null;
+	            
+	            String cardNumber = tarjeta.getString( "cardNumber" );
+	            String dueño = tarjeta.getString( "dueño" );
+	            int csv = tarjeta.getInt( "csv" );
+	            String fechaDeExpiracion = tarjeta.getString( "fechaDeExpiracion" );
+	            double saldo = tarjeta.getDouble( "saldo" );
+	            nuevaTarjeta = new TarjetaCredito(cardNumber, dueño, csv, fechaDeExpiracion, saldo);
+	            galeria.addTarjeta(dueño, nuevaTarjeta);
+	            
+	     }
+	}
+	
 	public void cargarHistoriaPiezas(String archivo, Galeria galeria) throws IOException {
 		String jsonCompleto = new String( Files.readAllBytes( new File( archivo ).toPath( ) ) );
         JSONObject raiz = new JSONObject( jsonCompleto );
         
         crearHistoriaPiezas( galeria, raiz.getJSONArray( "allPiezas" ) );
 	}
+	
 	
 	private void crearHistoriaPiezas( Galeria galeria, JSONArray jAllPiezas) {
 		int numPiezas = jAllPiezas.length( );
@@ -470,6 +497,26 @@ public class PersistenciaJson implements IPersistencia{
 
 	}
 	
+	public JSONArray guardarTarjetas(Galeria galeria) throws IOException {
+		
+		JSONObject jsonRaiz = new JSONObject();
+
+	    JSONArray jsonArrayTarjetas = new JSONArray();
+	    
+	    for(TarjetaCredito tarjeta: galeria.getTarjetas()) {
+	    	JSONObject jsonTarjeta = new JSONObject();
+	    	jsonTarjeta.put("cardNumber", tarjeta.getCardNumber());
+	    	jsonTarjeta.put("dueño", tarjeta.getDueño());
+	    	jsonTarjeta.put("csv", tarjeta.getCsv());
+	    	jsonTarjeta.put("fechaDeExpiracion", tarjeta.getExpiryDate());
+	    	jsonTarjeta.put("saldo", tarjeta.getSaldo());
+	    	jsonArrayTarjetas.put(jsonTarjeta);
+
+	    }
+	    jsonRaiz.put("tarjetas", jsonArrayTarjetas);
+	    return jsonArrayTarjetas;
+	}
+	
 	public JSONArray guardarAllPiezas(Galeria galeria) throws IOException {
 		
 		JSONObject jsonRaiz = new JSONObject();
@@ -522,10 +569,12 @@ public class PersistenciaJson implements IPersistencia{
 		JSONArray jsonArrayAllPiezas = guardarAllPiezas(galeria);
 		JSONArray jsonArrayCompradores = guardarCompradores(galeria);
 		JSONArray jsonArrayPiezas = guardarPiezas(galeria);
+		JSONArray jsonArrayTarjetas = guardarTarjetas(galeria);
 		jsonRaiz.put("empleados", jsonArrayEmpleados);
 		jsonRaiz.put("compradores", jsonArrayCompradores);
 		jsonRaiz.put("piezas", jsonArrayPiezas);
 		jsonRaiz.put("allPiezas", jsonArrayAllPiezas);
+		jsonRaiz.put("tarjetas", jsonArrayTarjetas);
 		
         try (FileWriter archivo = new FileWriter(rutaArchivo)) {
             archivo.write(jsonRaiz.toString());

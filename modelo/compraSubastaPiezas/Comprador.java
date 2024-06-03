@@ -69,5 +69,9 @@ public class Comprador {
 		return metodoPago;
 	}
 
+	public void setMetodoPago(String metodoPago) {
+		this.metodoPago = metodoPago;
+	}
+
 	
 }
